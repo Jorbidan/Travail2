@@ -58,7 +58,33 @@ char AfficherMenu()
 }
 void CreerCommande()
 {
-//	Commande laCommande;
+	Commande laCommande;
+	string reponse;
+	cout << "Nom du client : ";
+	cin >> reponse;
+	laCommande.setNomClient(reponse);
+	ClrScr();
+	cout << "Bonjour "<<laCommande.getNomClient<<",\n";
+	cin >> reponse;
+	string achatProduit = "";
+	while (achatProduit != "non" || "NON")
+	{
+		cout << "Voulez-vous acheter un produit?(oui/non)";
+		cin >> achatProduit;
+		if (achatProduit != "non" || "NON")
+		{
+			cout << "Entrez le code de produit que vous voulez acheter.\n";
+			cin >> reponse;
+			bool codeTrouver = false;
+			for (int cpt = 0; cpt < maxProduitsAVendre || codeTrouver == false;cpt++)
+			{
+				if (reponse == gestionCommande.produitsAVendre[cpt].getCode())
+				{
+					codeTrouver = true;
+				}
+			}
+		}
+	}
 
 
 

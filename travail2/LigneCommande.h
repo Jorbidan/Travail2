@@ -4,15 +4,14 @@
 #include <iostream>
 #include <string>
 #include "produit/Produit.h"
-#include "LigneCommande.h"
 
 using namespace std;
 
-int maxProduitCommande = 5
 class LigneCommande
 {
 	private:
 		int quantite;
+		Produit* produitAchat;
 	public:
 	//constructeur
 		LigneCommande();

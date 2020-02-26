@@ -4,28 +4,28 @@
 #include <iostream>
 #include <string>
 #include "produit/Produit.h"
-#include "Client.h"
 #include "LigneCommande.h"
 
 using namespace std;
 
+int maxProduitCommande = 5;
 
 class Commande
 {
-private:
-	int maxProduitCommande = 5;
-	Client nomClient;
-	bool commandeFinal;
-public:
+	private:
+		string nomClient;
+		bool commandeFinal;
+		LigneCommande lignesAchat[5];
+	public:
 	//constructeur
-	Commande();
-	Commande(const Commande& inCommande);
+		Commande();
+		Commande(const Commande&);
 	//set
-	void setNomClient(string);
-	void setCommandeFinal(bool);
+		void setNomClient(string);
+		void setCommandeFinal(bool);
 	//get
-	string getNomClient() const;
-	bool getcommandeFinal() const;
+		string getNomClient() const;
+		bool getcommandeFinal() const;
 
 };
 

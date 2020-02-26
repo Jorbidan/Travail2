@@ -149,11 +149,11 @@
     <ClCompile Include="..\screen\screen.cpp" />
     <ClCompile Include="Commande.cpp" />
     <ClCompile Include="donnees.cpp" />
+    <ClCompile Include="LigneCommande.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\screen\screen.h" />
-    <ClInclude Include="Client.h" />
     <ClInclude Include="donnees.h" />
     <ClInclude Include="Commande.h" />
     <ClInclude Include="LigneCommande.h" />

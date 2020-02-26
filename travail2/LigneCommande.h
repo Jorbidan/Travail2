@@ -18,6 +18,7 @@ class LigneCommande
 		LigneCommande(const LigneCommande& inLigneCommande);
 	//set
 		void setQuantite(int);
+		void setProduit(Produit*);
 	//get
 		int getQuantite() const;
 };

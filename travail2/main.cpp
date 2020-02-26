@@ -59,29 +59,24 @@ char AfficherMenu()
 void CreerCommande()
 {
 	Commande laCommande;
-	string reponse;
+	string reponseStr;
 	cout << "Nom du client : ";
-	cin >> reponse;
-	laCommande.setNomClient(reponse);
+	cin >> reponseStr;
+	laCommande.setNomClient(reponseStr);
 	ClrScr();
 	cout << "Bonjour "<<laCommande.getNomClient<<",\n";
-	cin >> reponse;
+	cin >> reponseStr;
 	string achatProduit = "";
 	while (achatProduit != "non" || "NON")
 	{
-		cout << "Voulez-vous acheter un produit?(oui/non)";
+		cout << "Voulez-vous acheter un produit?(oui/non)\n";
 		cin >> achatProduit;
 		if (achatProduit != "non" || "NON")
 		{
-			cout << "Entrez le code de produit que vous voulez acheter.\n";
-			cin >> reponse;
-			bool codeTrouver = false;
-			for (int cpt = 0; cpt < maxProduitsAVendre || codeTrouver == false;cpt++)
+			if(laCommande.//trouver la derniere ligne pour voir si elle est deja utiliser (si c'est le cas quitter le gros while)
+			if (AjouterUneLigne(reponseStr, laCommande) == false)
 			{
-				if (reponse == gestionCommande.produitsAVendre[cpt].getCode())
-				{
-					codeTrouver = true;
-				}
+				cout << "Aucun code de produit correspond au code entre.";
 			}
 		}
 	}
@@ -89,6 +84,24 @@ void CreerCommande()
 
 
 //	AjouterCommande(laCommande);
+}
+bool AjouterUneLigne(string reponseStr, Commande laCommande)
+{
+	int reponseInt;
+	cout << "Entrez le code de produit que vous voulez acheter.\n";
+	cin >> reponseStr;
+	bool codeTrouver = false;
+	for (int cpt = 0; cpt < maxProduitsAVendre || codeTrouver == false; cpt++)
+	{
+		if (reponseStr == gestionCommande.produitsAVendre[cpt].getCode())
+		{
+			codeTrouver = true;
+			cout << "Combien voulez-vous en acheter?\n";
+			cin >> reponseInt;
+			laCommande.setLignesAchat(reponseInt, &gestionCommande.produitsAVendre[cpt]);
+		}
+	}
+	return codeTrouver;
 }
 
 //pour tester constructeur par recopie

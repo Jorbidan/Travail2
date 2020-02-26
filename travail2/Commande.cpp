@@ -29,6 +29,20 @@ void Commande::setCommandeFinal(bool inCommandeFinal)
 	commandeFinal = inCommandeFinal;
 }
 
+void Commande::setLignesAchat(int inQuantite, Produit* inProduit)
+{
+	bool trouver = false;
+	for (int cpt = 0; cpt < 5 && trouver == false; cpt++)
+	{
+		if (lignesAchat[cpt].getQuantite() == NULL)
+		{
+			trouver = true;
+			lignesAchat[cpt].setQuantite(inQuantite);
+			lignesAchat[cpt].setProduit(inProduit);
+		}
+	}
+}
+
 //GET------------------------------------------------------------------------------------
 string Commande::getNomClient() const
 {

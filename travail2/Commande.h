@@ -23,6 +23,7 @@ class Commande
 	//set
 		void setNomClient(string);
 		void setCommandeFinal(bool);
+		void setLignesAchat(int, Produit*);
 	//get
 		string getNomClient() const;
 		bool getcommandeFinal() const;

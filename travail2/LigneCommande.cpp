@@ -17,6 +17,11 @@ void LigneCommande::setQuantite(int inQuantite)
 	quantite = inQuantite;
 }
 
+void LigneCommande::setProduit(Produit* inProduit)
+{
+	produitAchat = inProduit;
+}
+
 //GET------------------------------------------------------------------------------------
 int LigneCommande::getQuantite() const
 {

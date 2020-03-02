@@ -16,6 +16,8 @@ void AjouterCommande(Commande);
 void AfficherLesCommandes();
 void TraiterLesCommandes();
 bool AjouterUneLigne(string, Commande);
+void AfficherUneLigneCommande(int, int);
+
 
 void main()
 {
@@ -72,7 +74,7 @@ void CreerCommande()
 	{
 		cout << "Voulez-vous ajouter un autre produit a votre commande?(oui/non)\n";
 		cin >> achatProduit;
-		if (achatProduit != "non" && cpt < 5 && achatProduit != "NON")
+		if (achatProduit != "non" && cpt < maxProduitCommande && achatProduit != "NON")
 		{
 			cout << "Entrez le code de produit que vous voulez acheter.\n";
 			cin >> reponseStr;
@@ -90,7 +92,7 @@ void CreerCommande()
 		}
 		else
 		{
-			cpt = 5;
+			cpt = maxProduitCommande;
 		}
 	}
 	ClrScr();
@@ -115,8 +117,8 @@ void AjouterCommande(Commande inCommande)
 {
 	for (int cpt = 0; cpt < maxCommandes; cpt++)
 	{
-		if (gestionCommande.commandesFait[cpt].getNomClient() == "")//si la commande n'as pas de nom elle est assurement vide
-		{															//Sinon avant j'avait &gestionCommande.commandesFait[cpt] == NULL
+		if (gestionCommande.commandesFait[cpt].getProduitLigneAchat(0) == NULL)
+		{															
 			gestionCommande.setCommandeFait(cpt, inCommande);
 			cpt = maxCommandes;
 		}
@@ -126,16 +128,34 @@ void AjouterCommande(Commande inCommande)
 void AfficherLesCommandes()
 {
 	ClrScr();
-	string reponse;
-	for (int cpt = 0; cpt < maxCommandes; cpt++)
+	for (int cpt = 0; (cpt < maxCommandes) && (gestionCommande.commandesFait[cpt].getProduitLigneAchat(0) != NULL); cpt++)
+	{
+		cout << gestionCommande.commandesFait[cpt].getNomClient() << "\n";
+		int totalCommande = 0;
+		for (int cptLignes = 0; cptLignes < maxProduitCommande; cptLignes++)
+		{
+			if (gestionCommande.commandesFait[cpt].getProduitLigneAchat(cptLignes) != NULL)
+			{
+				AfficherUneLigneCommande(cpt, cptLignes);
+				totalCommande += gestionCommande.commandesFait[cpt].getPrixProduitLigneAchat(cptLignes) * gestionCommande.commandesFait[cpt].getQuantiteLigneAchat(cptLignes);
+				if ((gestionCommande.commandesFait[cpt].getProduitLigneAchat(cptLignes + 1) == NULL) || (cptLignes + 1 == maxProduitCommande))
+				{
+					cout << totalCommande << "$ au total pour la commande!\nI---------------------------I\n";
+				}
+			}
+		}
+	}
+	system("pause");
+	
+	/*for (int cpt = 0; cpt < maxCommandes; cpt++)
 	{
 		if (gestionCommande.commandesFait[cpt].getNomClient() != "")
 		{
 			int totalCommande = 0;
 			cout << gestionCommande.commandesFait[cpt].getNomClient() << "\n";
-			for (int cptLignes = 0; cptLignes < 5 ; cptLignes++)
+			for (int cptLignes = 0; cptLignes < maxProduitCommande; cptLignes++)
 			{
-				if (gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getCode() != "")//4:ajouter apres pour regler l'erreur mais sans succès....
+				if (gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit() != NULL)//4:ajouter apres pour regler l'erreur mais sans succès....
 				{																							  //5:oui c'Est vraiment qu'il lit quelquechose de vide et n'Aiime pas ca....
 					cout << gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getCode() << " "//1:Erreur a partir d'ici??? On dirait qu'il trouve une valeur NULL et il n'aime pas ca...
 						<< gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getNom() << " "  //2:Il en affiche 1 au complet, mais pas plus...
@@ -146,18 +166,22 @@ void AfficherLesCommandes()
 				}
 				else
 				{
-					cptLignes = 5;
+					cptLignes = maxProduitCommande;
 				}
 			}
 			cout << totalCommande << "$ au total pour la commande!\nI---------------------------I\n";
 		}
 	}
-	cout << "Etes-vous pret a retourner au menu principale?(oui/non)\n";
-	cin >> reponse;
-	if (reponse != "oui" && reponse != "OUI")
-	{
-		AfficherLesCommandes();
-	}
+	system("pause");*/
+}
+
+void AfficherUneLigneCommande(int cpt,int cptLignes)
+{
+		cout << gestionCommande.commandesFait[cpt].getCodeProduitLigneAchat(cptLignes) << " "
+			<< gestionCommande.commandesFait[cpt].getNomProduitLigneAchat(cptLignes) << " "
+			<< gestionCommande.commandesFait[cpt].getPrixProduitLigneAchat(cptLignes) << "$ chaque "
+			<< gestionCommande.commandesFait[cpt].getQuantiteLigneAchat(cptLignes) << " fois\n     Pour "
+			<< gestionCommande.commandesFait[cpt].getPrixProduitLigneAchat(cptLignes) * gestionCommande.commandesFait[cpt].getQuantiteLigneAchat(cptLignes) << "$.\n";
 }
 
 void TraiterLesCommandes()
@@ -167,63 +191,62 @@ void TraiterLesCommandes()
 	{
 		string reponseStr;
 		int reponseInt;
-		if (gestionCommande.commandesFait[cpt].getNomClient() != "" && gestionCommande.commandesFait[cpt].getcommandeFinal() == false)
+		if (gestionCommande.commandesFait[cpt].getProduitLigneAchat(0) != NULL && gestionCommande.commandesFait[cpt].getcommandeFinal() == false)
 		{
 			int totalCommande = 0;
 			cout << gestionCommande.commandesFait[cpt].getNomClient() << "\n";
-			for (int cptLignes = 0; cptLignes < 5; cptLignes++)
+			for (int cptLignes = 0; cptLignes < maxProduitCommande && gestionCommande.commandesFait[cpt].getProduitLigneAchat(cptLignes) != NULL; cptLignes++)
 			{
-				cout << gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getCode() << " "//Erreur a partir d'ici??? voir AfficherLesCommandes
-					<< gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getNom() << " "
-					<< gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getPrix() << "$ chaque "
-					<< gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getQuantite() << " fois\n     Pour "
-					<< gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getPrix() * gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getQuantite() << "$\n";
-				totalCommande += gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getPrix() * gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getQuantite();
+				if (gestionCommande.commandesFait[cpt].getProduitLigneAchat(cptLignes) != NULL)
+				{
+					AfficherUneLigneCommande(cpt, cptLignes);
+					totalCommande += gestionCommande.commandesFait[cpt].getPrixProduitLigneAchat(cptLignes) * gestionCommande.commandesFait[cpt].getQuantiteLigneAchat(cptLignes);
+					if ((gestionCommande.commandesFait[cpt].getProduitLigneAchat(cptLignes + 1) == NULL) || (cptLignes + 1 == maxProduitCommande))
+					{
+						cout << totalCommande << "$ au total pour la commande!\nI---------------------------I\n";
+					}
+				}
 			}
-			cout << totalCommande << "$ au total pour la commande!\nVoulez-vous finaliser la commande?(oui/non)";
+			cout <<"Voulez-vous finaliser la commande?(oui/non)\n";
 			cin >> reponseStr;
 			if (reponseStr != "non" && reponseStr != "NON")
 			{
-				for (int cptLignes = 0; cptLignes < 5 && reponseStr != "non" && reponseStr != "NON"; cptLignes++)//Possibilité de changer le for pour un while pour faire autant de modification que le client veux au lieu de 1 par ligne max
-				{												  //Il force l'usager à faire max 5 changement
-					cout << "Voulez-vous modifier des quantites?";
+				while (reponseStr != "non" && reponseStr != "NON")
+				{												  
+					cout << "Voulez-vous modifier des quantites?(oui/non)\n";
 					cin >> reponseStr;
-					if (reponseStr != "non" && reponseStr != "NON")//en mettant le while ici au lieu du if
+					if (reponseStr != "non" && reponseStr != "NON")
 					{
 						cout << "Entrez le code de produit que vous voulez modifiez la quantite.\n";
 						cin >> reponseStr;
 						bool codeTrouver = false;
-						for (int cptLignes = 0; cptLignes < 5 && codeTrouver == false; cptLignes++)
+						for (int cptLignes = 0; cptLignes < maxProduitCommande && codeTrouver == false; cptLignes++)
 						{
-							if (reponseStr == gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getCode())
+							if (reponseStr == gestionCommande.commandesFait[cpt].getCodeProduitLigneAchat(cptLignes))
 							{
+								cout << "Quel sera la nouvelle quantite?\n";
+								cin >> reponseInt;
+								gestionCommande.commandesFait[cpt].setQuantiteLigneAchat(cpt,reponseInt);
 								codeTrouver = true;
+								cout << "Modification effectue avec succes.\n";
 							}
 						}
-						if (codeTrouver == true)
-						{
-							cout << "Quel sera la nouvelle quantite?\n";
-							cin >> reponseInt;
-							codeTrouver = false;
-							for (int cptLignes = 0; cptLignes < 5 && codeTrouver == false; cptLignes++)
-							{
-								if (reponseStr == gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).getProduit()->getCode())
-								{
-									gestionCommande.commandesFait[cpt].getLigneAchat(cptLignes).setQuantite(reponseInt);
-								}
-							}
-							cout << "Modification effectue avec succès.\n";
-						}
-						else
+						if (codeTrouver == false)
 						{
 							cout << "Aucun code de produit commander correspond au code entre.\n";
 						}
 					}
 				}
+				cout << "La commande est maintenant final!\n";
+				gestionCommande.commandesFait[cpt].setCommandeFinal(true);
 			}
-			cout << "La commande est maintenant final!\n";
-			gestionCommande.commandesFait[cpt].setCommandeFinal(true);
+			else
+			{
+				cout << "Aucun changement effectue!\n";
+			}
 		}
 	}
+	cout << "Il n'y as plus de commande a finnaliser.\n";
+	system("pause");
 }
 

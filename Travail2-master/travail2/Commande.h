@@ -8,7 +8,7 @@
 
 using namespace std;
 
-//int maxProduitCommande = 5; erreur qu'il existe deja dans produit.obj?? mais ne me permet pas de l'utilier dans main...
+const int maxProduitCommande = 5; //erreur qu'il existe deja dans produit.obj?? mais ne me permet pas de l'utilier dans main...
 
 class Commande
 {
@@ -24,11 +24,16 @@ class Commande
 		void setNomClient(string);
 		void setCommandeFinal(bool);
 		void setLignesAchat(int,int, Produit*);
+		void setQuantiteLigneAchat(int,int);
 	//get
 		string getNomClient() const;
 		bool getcommandeFinal() const;
-		LigneCommande getLigneAchat(int) const;//je sai show dont tell...
-
+		LigneCommande getLigneAchat(int) const;
+		Produit* getProduitLigneAchat(int) const;
+		string getCodeProduitLigneAchat(int)const;
+		string getNomProduitLigneAchat(int)const;
+		int getPrixProduitLigneAchat(int)const;
+		int getQuantiteLigneAchat(int)const;
 };
 
 

@@ -31,18 +31,14 @@ void Commande::setCommandeFinal(bool inCommandeFinal)
 
 void Commande::setLignesAchat(int cpt,int inQuantite, Produit* inProduit)
 {
-	/*bool trouver = false;
-	for (int cpt = 0; cpt < 5 && trouver == false; cpt++)
-	{
-		if (lignesAchat[cpt].getQuantite() == NULL)
-		{
-			trouver = true;
-			lignesAchat[cpt].setQuantite(inQuantite);
-			lignesAchat[cpt].setProduit(inProduit);
-		}
-	}*/
+
 	lignesAchat[cpt].setQuantite(inQuantite);
 	lignesAchat[cpt].setProduit(inProduit);
+}
+
+void Commande::setQuantiteLigneAchat(int cpt,int inQuantite)
+{
+	lignesAchat[cpt].setQuantite(inQuantite);
 }
 
 //GET------------------------------------------------------------------------------------
@@ -59,4 +55,44 @@ bool Commande::getcommandeFinal() const
 LigneCommande Commande::getLigneAchat(int cpt) const
 {
 	return 	lignesAchat[cpt];
+}
+
+Produit* Commande::getProduitLigneAchat(int cpt) const
+{
+	return 	lignesAchat[cpt].getProduit();
+}
+
+string Commande::getCodeProduitLigneAchat(int cpt) const
+{
+	string code = "";
+	if (lignesAchat[cpt].getProduit() != NULL)
+	{
+		code = lignesAchat[cpt].getProduit()->getCode();
+	}
+	return code;
+}
+
+string Commande::getNomProduitLigneAchat(int cpt) const
+{
+	string nom = "";
+	if (lignesAchat[cpt].getProduit() != NULL)
+	{
+		nom = lignesAchat[cpt].getProduit()->getNom();
+	}
+	return nom;
+}
+
+int Commande::getPrixProduitLigneAchat(int cpt) const
+{
+	int prix = 0;
+	if (lignesAchat[cpt].getProduit() != NULL)
+	{
+		prix = lignesAchat[cpt].getProduit()->getPrix();
+	}
+	return prix;
+}
+
+int Commande::getQuantiteLigneAchat(int cpt) const
+{
+	return lignesAchat[cpt].getQuantite();
 }
